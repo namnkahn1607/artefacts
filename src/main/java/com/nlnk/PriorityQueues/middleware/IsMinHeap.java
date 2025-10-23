@@ -1,5 +1,9 @@
 package com.nlnk.PriorityQueues.middleware;
 
+/**
+ * 15. Design a linear-time certification algorithm to check whether an
+ * array {@code pq[]} is a min-oriented heap.
+ */
 public class IsMinHeap<Key extends Comparable<Key>> {
     public boolean isMinHeap(Key[] arr) {
         for (Key val : arr) {
