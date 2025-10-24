@@ -1,28 +1,16 @@
 package com.nlnk.PriorityQueues;
 
-public class MaxPQ<Key extends Comparable<Key>> extends BinaryHeap<Key> {
-    @SuppressWarnings("unchecked")
+import java.util.Iterator;
+
+public class MaxPQ<Key extends Comparable<Key>>
+        extends BinaryHeap<Key> implements Iterable<Key> {
+
     public MaxPQ(int initialCapacity) {
-        this.keys = (Key[]) new Comparable[1 + initialCapacity];
-        this.keys[0] = null;
-        this.size = 0;
-        this.capacity = initialCapacity;
+        super(initialCapacity);
     }
 
-    @SuppressWarnings("unchecked")
     public MaxPQ(Key[] keys) {
-        if (keys == null || keys.length == 0) {
-            throw new IllegalArgumentException("argument passing to MaxPQ is null");
-        }
-
-        this.keys = (Key[]) new Comparable[keys.length + 1];
-        this.keys[0] = null;
-        this.size = 0;
-        this.capacity = keys.length;
-
-        for (Key key : keys) {
-            insert(key);
-        }
+        super(keys);
     }
 
     @Override
@@ -41,15 +29,15 @@ public class MaxPQ<Key extends Comparable<Key>> extends BinaryHeap<Key> {
 
     @Override
     void sink(int i) {
-        final int m = size() + 1;
+        final int m = size();
 
-        while (2 * i < m) {
+        while (2 * i <= m) {
             final int L = 2 * i;
             final int R = 2 * i + 1;
 
             int max = L;
 
-            if (R < m && keys[R].compareTo(keys[max]) > 0) {
+            if (R <= m && keys[R].compareTo(keys[max]) > 0) {
                 max = R;
             }
 
@@ -59,6 +47,25 @@ public class MaxPQ<Key extends Comparable<Key>> extends BinaryHeap<Key> {
             } else {
                 break;
             }
+        }
+    }
+
+    @Override
+    public Iterator<Key> iterator() {
+        return new MaxPQIterator();
+    }
+
+    private class MaxPQIterator implements Iterator<Key> {
+        int index = 1;
+
+        @Override
+        public boolean hasNext() {
+            return index <= size;
+        }
+
+        @Override
+        public Key next() {
+            return keys[index++];
         }
     }
 }

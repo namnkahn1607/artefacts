@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 14. Fast 4-sum. Develop an optimal solution {@link OptimalFourSum} to the 4-sum problem.
+ */
 public class OptimalFourSum {
-    public List<List<Integer>> fourSum(int[] arr, int target) {
+    public static List<List<Integer>> fourSum(int[] arr, int target) {
         Arrays.sort(arr);
 
         final int size = arr.length;
@@ -28,12 +31,12 @@ public class OptimalFourSum {
                 while (L < R) {
                     final int sum = arr[L] + arr[R];
 
-                    if (sum > 0) {
+                    if (sum > key) {
                         --R;
-                    } else if (sum < 0) {
+                    } else if (sum < key) {
                         ++L;
                     } else {
-                        ans.add(List.of(arr[i], arr[j], arr[L], arr[R]));
+                        ans.add(Arrays.asList(arr[i], arr[j], arr[L], arr[R]));
                         ++L; --R;
 
                         while (L < R && arr[L] == arr[L - 1]) ++L;

@@ -11,6 +11,32 @@ public abstract class BinaryHeap<Key extends Comparable<Key>> {
 
     abstract void sink(int i);
 
+    @SuppressWarnings("unchecked")
+    protected BinaryHeap(int initialCapacity) {
+        this.keys = (Key[]) new Comparable[1 + initialCapacity];
+        this.keys[0] = null;
+        this.size = 0;
+        this.capacity = initialCapacity;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected BinaryHeap(Key[] keys) {
+        if (keys == null || keys.length == 0) {
+            throw new IllegalArgumentException("argument passing to MaxPQ is null");
+        }
+
+        this.keys = (Key[]) new Comparable[keys.length + 1];
+        this.keys[0] = null;
+        this.size = keys.length;
+        this.capacity = keys.length;
+
+        System.arraycopy(keys, 0, this.keys, 1, keys.length);
+
+        for (int i = size / 2; i >= 1; --i) {
+            sink(i);
+        }
+    }
+
     protected void swap(int i, int j) {
         Key tmp = keys[i];
         keys[i] = keys[j];
@@ -80,8 +106,19 @@ public abstract class BinaryHeap<Key extends Comparable<Key>> {
         return keys[1];
     }
 
-    public Key[] toArray() {
-        return Arrays.copyOfRange(keys, 1, 1 + size());
+    @SuppressWarnings("unchecked")
+    public Key[] toArray(Key[] a) {
+        if (a.length < size) {
+            return (Key[]) Arrays.copyOfRange(keys, 1, 1 + size, a.getClass());
+        }
+
+        System.arraycopy(keys, 1, a, 0, size);
+
+        if (a.length > size) {
+            a[size] = null;
+        }
+
+        return a;
     }
 
     public void clear() {
